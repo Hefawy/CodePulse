@@ -1,0 +1,108 @@
+<div class="container">
+
+      <h1 class="mt-3">Edit Blog Posts</h1>
+
+      <ng-container *ngIf="model">
+            <form #form="ngForm" (ngSubmit)="onFormSubmit()">
+                  <div class="mt-2 mb-5">
+                        <div class="mt-3">
+                              <label for="title" class="from-lable">Title</label>
+                              <input type="text" id="title" name="title" class="form-control" [(ngModel)]="model.title">
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="urlHandle" class="from-lable">Url Handle</label>
+                              <input type="text" id="urlHandle" name="urlHandle" class="form-control"
+                                    [(ngModel)]="model.urlHandle">
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="shortDescription" class="from-lable">Short Description</label>
+                              <input type="text" id="shortDescription" name="shortDescription" class="form-control"
+                                    [(ngModel)]="model.shortDescription">
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="content" class="from-lable">Content</label>
+
+                              <div class="d-flex flex-row">
+                                    <div class="col-6 p-2">
+                                          <textarea name="contant" id="contant" class="form-control"
+                                                style="height: 350px; max-height: 350px;" [(ngModel)]="model.content">
+                                          </textarea>
+                                    </div>
+
+                                    <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll;">
+                                          <markdown [data]="model.content"></markdown>
+                                    </div>
+                              </div>
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="featuredImageUrl" class="from-lable">Fatured Image Url
+                                    <button type="button" class="btn btn-light" (click)="openImageSelector()">Change
+                                          Image</button>
+                              </label>
+
+                              <ng-container *ngIf="model.featuredImageUrl !==''">
+                                    <div>
+                                          <img [src]="model.featuredImageUrl" class="my-2" style="height: 100;">
+                                    </div>
+                              </ng-container>
+
+                              <input type="text" id="featuredImageUrl" name="featuredImageUrl" class="form-control"
+                                    [(ngModel)]="model.featuredImageUrl">
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="publishedDate" class="from-lable">Published Date</label>
+                              <input type="date" id="publishedDate" name="publishedDate" class="form-control"
+                                    value="{{model.publishedDate}}"
+                                    [ngModel]="model.publishedDate | date: 'yyyy-MM-dd'">
+                        </div>
+
+
+
+                        <div class="mt-3">
+                              <label for="author" class="from-lable">Author</label>
+                              <input type="text" id="author" name="author" class="form-control"
+                                    [(ngModel)]="model.author">
+                        </div>
+
+                        <div class="form-check mt-3">
+                              <input class="form-check-input" type="checkbox" id="isVisible"
+                                    [(ngModel)]="model.isVisible" name="isVisible">
+                              <label class="form-check-label" for="isVisible">
+                                    Is Visible?
+                              </label>
+                        </div>
+
+                        <div class="mt-3">
+                              <label for="categories" class="from-table">Categories</label>
+                              <ng-container *ngIf="categories$ | async as categories">
+                                    <select class="from-control" name="categories" id="categories"
+                                          [(ngModel)]="selectedcategories" multiple>
+                                          <option *ngFor="let category of categories" [value]="category.id">
+                                                {{category.name}}
+                                          </option>
+                                    </select>
+                              </ng-container>
+                        </div>
+
+                        <div class="mt-3">
+                              <button type="submit" class="btn btn-primary">save</button>
+                              <button type="submit" class="btn btn-danger ms-3" (click)="onDelete()">Delete</button>
+                        </div>
+
+                  </div>
+            </form>
+      </ng-container>
+</div>
+
+<div class="images-container-model" [ngClass]="{'d-block': isImageSelectorVisible,
+'d-none': !isImageSelectorVisible}">
+      <button type="button" class="btn btn-close" style="position: fixed; top: 10px; right: 10px;"
+            (click)="closeImageSelector()"></button>
+
+      <app-image-selector></app-image-selector>
+</div>
